@@ -10,7 +10,21 @@ module.exports = {
   ],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        // Pretendard를 기본 sans 폰트로 설정
+        sans: ["Pretendard"],
+      },
+      fontWeight: {
+        // Variable 폰트에서 사용할 수 있는 weight들
+        light: "300",
+        normal: "400",
+        medium: "500",
+        semibold: "600",
+        bold: "700",
+        extrabold: "800",
+      },
+    },
   },
   plugins: [],
 };
