@@ -1,42 +1,42 @@
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
   return (
     <View className="flex-1 justify-center items-center p-4">
       <Text className="text-2xl font-bold mb-8 text-center">Welcome! 🎉</Text>
 
-      <View className="bg-blue-500 py-3 px-6 rounded-lg my-2 min-w-[120px]">
-        <Link href="/sign-in">
+      <Link href="/sign-in" asChild>
+        <TouchableOpacity className="bg-blue-500 py-3 px-6 rounded-lg my-2 min-w-[120px]">
           <Text className="text-white text-base font-medium text-center">
             Sign In
           </Text>
-        </Link>
-      </View>
+        </TouchableOpacity>
+      </Link>
 
-      <View className="bg-green-500 py-3 px-6 rounded-lg my-2 min-w-[120px]">
-        <Link href="/explore">
+      <Link href="/explore" asChild>
+        <TouchableOpacity className="bg-green-500 py-3 px-6 rounded-lg my-2 min-w-[120px]">
           <Text className="text-white text-base font-medium text-center">
             Explore
           </Text>
-        </Link>
-      </View>
+        </TouchableOpacity>
+      </Link>
 
-      <View className="bg-purple-500 py-3 px-6 rounded-lg my-2 min-w-[120px]">
-        <Link href="/profile">
+      <Link href="/profile" asChild>
+        <TouchableOpacity className="bg-purple-500 py-3 px-6 rounded-lg my-2 min-w-[120px]">
           <Text className="text-white text-base font-medium text-center">
             Profile
           </Text>
-        </Link>
-      </View>
+        </TouchableOpacity>
+      </Link>
 
-      <View className="bg-orange-500 py-3 px-6 rounded-lg my-2 min-w-[120px]">
-        <Link href="/properties/1">
+      <Link href="/properties/1" asChild>
+        <TouchableOpacity className="bg-orange-500 py-3 px-6 rounded-lg my-2 min-w-[120px]">
           <Text className="text-white text-base font-medium text-center">
             Property
           </Text>
-        </Link>
-      </View>
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 }
