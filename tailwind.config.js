@@ -11,6 +11,23 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
+      colors: {
+        primary: {
+          100: "#0061FF0A",
+          200: "#0061FF1A",
+          300: "#0061FF",
+        },
+        accent: {
+          100: "#FBFBFD",
+        },
+        black: {
+          DEFAULT: "#000000",
+          100: "#8C8E98",
+          200: "#666876",
+          300: "#191d31",
+        },
+        danger: "#F75555",
+      },
       fontFamily: {
         // Pretendard를 기본 sans 폰트로 설정
         sans: ["Pretendard"],
