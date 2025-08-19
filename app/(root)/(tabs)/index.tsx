@@ -8,13 +8,13 @@ export default function Index() {
         Welcome! 🎉
       </Text>
 
-      <Link href="/sign-in" asChild>
-        <TouchableOpacity className="bg-primary-300 py-4 px-8 rounded-xl my-3 min-w-[140px] shadow-lg">
+      <TouchableOpacity className="bg-primary-300 py-4 px-8 rounded-xl my-3 min-w-[140px] shadow-lg">
+        <Link href="/sign-in" asChild>
           <Text className="text-white text-lg font-semibold text-center">
             Sign In
           </Text>
-        </TouchableOpacity>
-      </Link>
+        </Link>
+      </TouchableOpacity>
 
       <Link href="/explore" asChild>
         <TouchableOpacity className="bg-primary-200 py-4 px-8 rounded-xl my-3 min-w-[140px] shadow-lg">
