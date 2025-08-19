@@ -1,4 +1,5 @@
 import CustomSplashScreen from "@/components/CustomSplashScreen";
+import GlobalProvider from "@/context/GlobalProvider";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -26,5 +27,9 @@ export default function RootLayout() {
     return <CustomSplashScreen />;
   }
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <GlobalProvider>
+      <Stack screenOptions={{ headerShown: false }} />
+    </GlobalProvider>
+  );
 }

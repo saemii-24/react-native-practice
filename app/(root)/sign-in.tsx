@@ -1,14 +1,47 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import {
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { images } from "@/constants/images";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import { signIn } from "@/lib/appwrite";
 
 const SignIn = () => {
   console.log("🚀 SignIn 컴포넌트가 렌더링되었습니다!");
+  const { setUser, setIsLogged } = useGlobalContext();
+  const [isSubmitting, setSubmitting] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     console.log("🚀 로그인 버튼이 클릭되었습니다!");
+
+    // 임시로 테스트용 계정으로 로그인 (나중에 Google OAuth로 변경)
+    setSubmitting(true);
+
+    try {
+      // 테스트용 - 실제로는 Google OAuth를 사용할 예정
+      const testEmail = "test@example.com";
+      const testPassword = "password123";
+
+      const result = await signIn(testEmail, testPassword);
+
+      if (result) {
+        setIsLogged(true);
+        Alert.alert("Success", "로그인에 성공했습니다!");
+        router.replace("/(root)/(tabs)");
+      }
+    } catch (error: any) {
+      Alert.alert("Error", error.message || "로그인에 실패했습니다.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -54,7 +87,10 @@ const SignIn = () => {
 
             <TouchableOpacity
               onPress={handleLogin}
-              className="bg-white shadow-md shadow-zinc-300 rounded-full w-full py-4 mt-5"
+              disabled={isSubmitting}
+              className={`bg-white shadow-md shadow-zinc-300 rounded-full w-full py-4 mt-5 ${
+                isSubmitting ? "opacity-50" : ""
+              }`}
             >
               <View className="flex flex-row items-center justify-center">
                 <Image
@@ -63,7 +99,7 @@ const SignIn = () => {
                   style={{ marginRight: 8 }}
                 />
                 <Text className="text-lg font-medium text-black-300 ml-2">
-                  Continue with Google
+                  {isSubmitting ? "Connecting..." : "Continue with Google"}
                 </Text>
               </View>
             </TouchableOpacity>
