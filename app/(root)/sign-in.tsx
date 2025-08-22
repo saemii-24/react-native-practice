@@ -20,27 +20,17 @@ const SignIn = () => {
   const [isSubmitting, setSubmitting] = useState(false);
 
   const handleLogin = async () => {
-    console.log("🚀 로그인 버튼이 클릭되었습니다!");
-
-    // 임시로 테스트용 계정으로 로그인 (나중에 Google OAuth로 변경)
-    setSubmitting(true);
-
     try {
-      // 테스트용 - 실제로는 Google OAuth를 사용할 예정
-      const testEmail = "test@example.com";
-      const testPassword = "password123";
-
-      const result = await signIn(testEmail, testPassword);
+      // 테스트용 로그인 - 실제로는 Google OAuth나 다른 인증 방식을 사용
+      const result = await signIn("test@example.com", "password123");
 
       if (result) {
+        console.log("Login Success");
         setIsLogged(true);
-        Alert.alert("Success", "로그인에 성공했습니다!");
         router.replace("/(root)/(tabs)");
       }
-    } catch (error: any) {
-      Alert.alert("Error", error.message || "로그인에 실패했습니다.");
-    } finally {
-      setSubmitting(false);
+    } catch (error) {
+      Alert.alert("Error", "Failed to login");
     }
   };
 

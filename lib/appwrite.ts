@@ -70,17 +70,21 @@ export const signIn = async (email: string, password: string) => {
 // 현재 사용자 가져오기
 export const getCurrentUser = async () => {
   try {
-    const currentAccount = await account.get();
+    const response = await account.get();
 
-    if (!currentAccount) throw Error;
+    if (response.$id) {
+      const userAvatar = avatars.getInitials(response.name);
 
-    return currentAccount;
+      return {
+        ...response,
+        avatar: userAvatar.toString(),
+      };
+    }
   } catch (error: any) {
     console.log(error);
     return null;
   }
 };
-
 // 로그아웃
 export const signOut = async () => {
   try {
