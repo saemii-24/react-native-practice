@@ -1,68 +1,59 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { getCurrentUser } from "../lib/appwrite";
+import { getCurrentUser } from "@/lib/appwrite";
+import { useAppwrite } from "@/lib/useAppwrite";
+import React, { createContext, ReactNode, useContext } from "react";
+
+interface GlobalContextType {
+  isLogged: boolean;
+  user: User | null | undefined;
+  loading: boolean;
+  refetch: (newParams?: Record<string, string | number>) => Promise<void>;
+}
 
 interface User {
   $id: string;
   name: string;
   email: string;
-  avatar?: string;
+  avatar: string;
 }
 
-interface GlobalContextType {
-  isLogged: boolean;
-  user: User | null;
-  loading: boolean;
-  setIsLogged: (isLogged: boolean) => void;
-  setUser: (user: User | null) => void;
+const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
+
+interface GlobalProviderProps {
+  children: ReactNode;
 }
 
-const GlobalContext = createContext<GlobalContextType>({
-  isLogged: false,
-  user: null,
-  loading: true,
-  setIsLogged: () => {},
-  setUser: () => {},
-});
+export const GlobalProvider = ({ children }: GlobalProviderProps) => {
+  const {
+    data: user,
+    loading,
+    refetch,
+  } = useAppwrite({
+    fn: getCurrentUser,
+  });
 
-export const useGlobalContext = () => useContext(GlobalContext);
-
-const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isLogged, setIsLogged] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getCurrentUser()
-      .then((res) => {
-        if (res) {
-          setIsLogged(true);
-          setUser(res);
-        } else {
-          setIsLogged(false);
-          setUser(null);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  const isLogged = !!user;
 
   return (
     <GlobalContext.Provider
       value={{
         isLogged,
-        setIsLogged,
         user,
-        setUser,
         loading,
+        refetch: (newParams?: Record<string, string | number>) =>
+          refetch(newParams as any),
       }}
     >
       {children}
     </GlobalContext.Provider>
   );
+};
+
+export const useGlobalContext = (): GlobalContextType => {
+  const context = useContext(GlobalContext);
+  if (!context)
+    throw new Error("useGlobalContext must be used within a GlobalProvider");
+
+  return context;
 };
 
 export default GlobalProvider;

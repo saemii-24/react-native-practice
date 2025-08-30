@@ -1,4 +1,12 @@
-import { Account, Avatars, Client, Databases, ID } from "react-native-appwrite";
+import * as Linking from "expo-linking";
+import { openAuthSessionAsync } from "expo-web-browser";
+import {
+  Account,
+  Avatars,
+  Client,
+  Databases,
+  OAuthProvider,
+} from "react-native-appwrite";
 
 const config = {
   endpoint:
@@ -23,49 +31,49 @@ const avatars = new Avatars(client);
 const databases = new Databases(client);
 
 // 사용자 회원가입
-export const createUser = async (
-  email: string,
-  password: string,
-  username: string
-) => {
-  try {
-    const newAccount = await account.create(
-      ID.unique(),
-      email,
-      password,
-      username
-    );
-
-    if (!newAccount) throw Error;
-
-    const avatarUrl = avatars.getInitials(username);
-
-    await signIn(email, password);
-
-    const newUser = {
-      accountId: newAccount.$id,
-      email: newAccount.email,
-      username: newAccount.name,
-      avatar: avatarUrl,
-    };
-
-    return newUser;
-  } catch (error: any) {
-    console.log(error);
-    throw new Error(error);
-  }
-};
 
 // 사용자 로그인
-export const signIn = async (email: string, password: string) => {
+export async function login() {
   try {
-    const session = await account.createEmailPasswordSession(email, password);
-    return session;
-  } catch (error: any) {
-    console.log(error);
-    throw new Error(error);
+    const redirectUri = Linking.createURL("/");
+
+    const response = await account.createOAuth2Token(
+      OAuthProvider.Google,
+      redirectUri
+    );
+    if (!response) throw new Error("Create OAuth2 token failed");
+
+    const browserResult = await openAuthSessionAsync(
+      response.toString(),
+      redirectUri
+    );
+    if (browserResult.type !== "success")
+      throw new Error("Create OAuth2 token failed");
+
+    const url = new URL(browserResult.url);
+    const secret = url.searchParams.get("secret")?.toString();
+    const userId = url.searchParams.get("userId")?.toString();
+    if (!secret || !userId) throw new Error("Create OAuth2 token failed");
+
+    const session = await account.createSession(userId, secret);
+    if (!session) throw new Error("Failed to create session");
+
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
   }
-};
+}
+
+export async function logout() {
+  try {
+    const result = await account.deleteSession("current");
+    return result;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
 
 // 현재 사용자 가져오기
 export const getCurrentUser = async () => {

@@ -1,6 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { router } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import {
   Alert,
   Image,
@@ -12,24 +11,18 @@ import {
 
 import { images } from "@/constants/images";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { signIn } from "@/lib/appwrite";
+import { login } from "@/lib/appwrite";
 
 const SignIn = () => {
   console.log("🚀 SignIn 컴포넌트가 렌더링되었습니다!");
-  const { setUser, setIsLogged } = useGlobalContext();
-  const [isSubmitting, setSubmitting] = useState(false);
+  const { refetch, loading, isLoggedIn } = useGlobalContext();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const handleLogin = async () => {
-    try {
-      // 테스트용 로그인 - 실제로는 Google OAuth나 다른 인증 방식을 사용
-      const result = await signIn("test@example.com", "password123");
-
-      if (result) {
-        console.log("Login Success");
-        setIsLogged(true);
-        router.replace("/(root)/(tabs)");
-      }
-    } catch (error) {
+    const result = await login();
+    if (result) {
+      refetch();
+    } else {
       Alert.alert("Error", "Failed to login");
     }
   };
