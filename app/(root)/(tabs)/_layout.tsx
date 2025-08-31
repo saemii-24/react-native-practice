@@ -1,59 +1,53 @@
 import { Tabs } from "expo-router";
+import { House } from "lucide-react";
 import React from "react";
-import { Platform } from "react-native";
+import { Text, View } from "react-native";
 
-import { HapticTab } from "@/components/HapticTab";
-import { IconSymbol } from "@/components/ui/IconSymbol";
-import TabBarBackground from "@/components/ui/TabBarBackground";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+const TabIcon = ({
+  focused,
+  icon,
+  title,
+}: {
+  focused: boolean;
+  icon: any;
+  title: string;
+}) => (
+  <View className="flex-1 mt-3 flex flex-col items-center">
+    {icon}
+    <Text
+      className={`${focused ? "text-primary-300 font-rubik-medium" : "text-black-200 font-rubik"} text-xs w-full text-center mt-1`}
+    >
+      {title}
+    </Text>
+  </View>
+);
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+const TabsLayout = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        headerShown: true,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: "absolute",
-          },
-          default: {},
-        }),
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          backgroundColor: "white",
+          position: "absolute",
+          borderTopColor: "#0061FF1A",
+          borderTopWidth: 1,
+          minHeight: 70,
+        },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon icon={<House />} focused={focused} title="Home" />
           ),
         }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: "Explore",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="person.fill" color={color} />
-          ),
-        }}
-      />
+      ></Tabs.Screen>
     </Tabs>
   );
-}
+};
+
+export default TabsLayout;

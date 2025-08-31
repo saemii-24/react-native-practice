@@ -1,5 +1,8 @@
+import { images } from "@/constants/images";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import { login } from "@/lib/appwrite";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import React, { useState } from "react";
 import {
   Alert,
   Image,
@@ -9,21 +12,24 @@ import {
   View,
 } from "react-native";
 
-import { images } from "@/constants/images";
-import { useGlobalContext } from "@/context/GlobalProvider";
-import { login } from "@/lib/appwrite";
-
 const SignIn = () => {
-  console.log("🚀 SignIn 컴포넌트가 렌더링되었습니다!");
-  const { refetch, loading, isLoggedIn } = useGlobalContext();
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const { refetch } = useGlobalContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleLogin = async () => {
-    const result = await login();
-    if (result) {
-      refetch();
-    } else {
+    setIsSubmitting(true);
+    try {
+      const result = await login();
+      if (result) {
+        refetch();
+        // 로그인 성공 시 추가 동작 (예: 라우팅)
+      } else {
+        Alert.alert("Error", "Failed to login");
+      }
+    } catch (error) {
       Alert.alert("Error", "Failed to login");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -36,7 +42,6 @@ const SignIn = () => {
             className="w-full h-full"
             resizeMode="cover"
           />
-          {/* 중앙에서 하단까지 그라데이션 오버레이 */}
           <LinearGradient
             colors={[
               "transparent",
@@ -53,27 +58,21 @@ const SignIn = () => {
               right: 0,
             }}
           />
-          {/* 텍스트를 하단에 배치 */}
           <View className="absolute bottom-[120px] left-0 right-0 px-10">
             <Text className="text-base text-center uppercase font-medium text-black-200">
               Welcome to ReState
             </Text>
-
             <Text className="text-3xl font-bold text-black-300 text-center mt-2">
               Let&apos;s Get You Closer to {"\n"}
               <Text className="text-primary-300">Your Ideal Home</Text>
             </Text>
-
             <Text className="text-lg font-medium text-black-200 text-center mt-4">
               Login to ReState with Google
             </Text>
-
             <TouchableOpacity
               onPress={handleLogin}
               disabled={isSubmitting}
-              className={`bg-white shadow-md shadow-zinc-300 rounded-full w-full py-4 mt-5 ${
-                isSubmitting ? "opacity-50" : ""
-              }`}
+              className={`bg-white shadow-md shadow-zinc-300 rounded-full w-full py-4 mt-5 ${isSubmitting ? "opacity-50" : ""}`}
             >
               <View className="flex flex-row items-center justify-center">
                 <Image
