@@ -1,22 +1,26 @@
 import { Tabs } from "expo-router";
-import { House } from "lucide-react";
+import { House, Search, User } from "lucide-react-native";
 import React from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 const TabIcon = ({
   focused,
-  icon,
+  Icon,
   title,
 }: {
   focused: boolean;
-  icon: any;
+  Icon: React.ElementType;
   title: string;
 }) => (
-  <View className="flex-1 mt-3 flex flex-col items-center">
-    {icon}
-    <Text
-      className={`${focused ? "text-primary-300 font-rubik-medium" : "text-black-200 font-rubik"} text-xs w-full text-center mt-1`}
-    >
+  <View style={styles.tabIcon}>
+    <View>
+      <Icon
+        size={24}
+        color={focused ? "#0061FF" : "#999"}
+        strokeWidth={focused ? 2 : 1.5}
+      />
+    </View>
+    <Text style={[styles.tabText, { color: focused ? "#0061FF" : "#666" }]}>
       {title}
     </Text>
   </View>
@@ -42,12 +46,46 @@ const TabsLayout = () => {
           title: "Home",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon icon={<House />} focused={focused} title="Home" />
+            <TabIcon Icon={House} focused={focused} title="Home" />
           ),
         }}
-      ></Tabs.Screen>
+      />
+      <Tabs.Screen
+        name="explore"
+        options={{
+          title: "Explore",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon Icon={Search} focused={focused} title="Explore" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon Icon={User} focused={focused} title="Profile" />
+          ),
+        }}
+      />
     </Tabs>
   );
 };
+
+const styles = StyleSheet.create({
+  tabIcon: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 8,
+  },
+  tabText: {
+    fontSize: 12,
+    marginTop: 4,
+    textAlign: "center",
+  },
+});
 
 export default TabsLayout;
