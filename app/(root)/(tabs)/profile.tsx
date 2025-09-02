@@ -1,20 +1,30 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { images } from "@/constants/images";
+import { Bell } from "lucide-react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View, } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Profile = () => {
+  const handleLogout = async () => {};
+
   return (
-    <View style={styles.container}>
-      <Text>Profile</Text>
-    </View>
+    <SafeAreaView className="h-full bg-white">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerClassName="pb-32 px-7"
+      >
+        <View className="flex flex-row items-center justify-between mt-5">
+          <Text className="text-xl font-regular">Profile</Text>
+         
+              <Bell 
+                 size={24}
+               />
+               <TouchableOpacity>
+                <Image  source={images.profile} />
+               </TouchableOpacity>
+             </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
 
 export default Profile;
