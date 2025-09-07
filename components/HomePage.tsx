@@ -1,12 +1,13 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { HomeCard } from "./HomeCard";
 import HomeHeader from "./HomeHeader";
+import HomeRecommendCard from "./HomeRecommendCard";
 import HomeSearch from "./HomeSearch";
 
 const HomePage = () => {
   return (
-    <View className="w-full max-h-dvh">
+    <ScrollView className="w-full bg-white">
       <HomeHeader />
       <HomeSearch />
       <View className="my-5">
@@ -19,8 +20,20 @@ const HomePage = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <HomeCard />
-    </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          columnGap: 16,
+        }}
+      >
+        <HomeCard />
+        <HomeCard />
+        <HomeCard />
+      </ScrollView>
+      <HomeRecommendCard />
+    </ScrollView>
   );
 };
 
