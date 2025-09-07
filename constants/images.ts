@@ -3,6 +3,7 @@
 export const images = {
   onboarding: require("../assets/images/onboarding.jpg"),
   profile: require("../assets/images/profile.jpg"),
+  feature: require("../assets/images/feature.jpg"),
 };
 
 export default images;
