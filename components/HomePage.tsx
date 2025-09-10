@@ -1,5 +1,11 @@
 import React from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { HomeCard } from "./HomeCard";
 import HomeFilter from "./HomeFilter";
 import HomeHeader from "./HomeHeader";
@@ -24,18 +30,18 @@ const HomePage = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <ScrollView
+      <FlatList
+        data={[1, 2, 3]} // 카드 개수에 맞는 데이터 배열
+        keyExtractor={(item) => item.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
           paddingHorizontal: 16,
           columnGap: 16,
         }}
-      >
-        <HomeCard />
-        <HomeCard />
-        <HomeCard />
-      </ScrollView>
+        renderItem={({ item }) => <HomeCard />} // 아이템 렌더링
+      />
+
       <View className="my-5 px-4">
         <View className="flex flex-row items-center justify-between">
           <Text className="text-xl font-rubik-bold text-black-300">

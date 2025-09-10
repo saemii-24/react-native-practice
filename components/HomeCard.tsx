@@ -22,11 +22,7 @@ export const HomeCard = ({
       onPress={onPress}
       className="flex flex-col items-start w-60 h-80 relative"
     >
-      <Image
-        resizeMode="contain"
-        source={images.feature}
-        className="w-full h-1/2 rounded-2xl"
-      />
+      <Image source={images.feature} className="size-full rounded-2xl" />
 
       <View className="absolute left-3 top-3 bg-white rounded-full px-3 py-1 shadow">
         <Text className="text-xs font-bold text-primary-300">{rating}</Text>
