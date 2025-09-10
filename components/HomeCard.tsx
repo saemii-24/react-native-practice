@@ -20,7 +20,7 @@ export const HomeCard = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="flex flex-col items-start w-60 h-80 relative"
+      className="flex flex-col items-start w-60 h-80 relative overflow-hidden rounded-2xl"
     >
       <Image source={images.feature} className="size-full rounded-2xl" />
 
