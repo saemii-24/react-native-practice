@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { House, Search, User } from "lucide-react-native";
+import { House, Mail, Search, User } from "lucide-react-native";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -57,6 +57,16 @@ const TabsLayout = () => {
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <TabIcon Icon={Search} focused={focused} title="Explore" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="chat"
+        options={{
+          title: "Chat",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon Icon={Mail} focused={focused} title="Chat" />
           ),
         }}
       />
